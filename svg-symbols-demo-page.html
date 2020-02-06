@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1 Symbols</title>
+  <meta name="viewport" content="width=device-width" />
+  <style>
+    html {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      color: black;
+      background: #e4e4e4;
+      text-align: center;
+    }
+    body {
+      margin: 0;
+      padding-top: 2.5rem;
+    }
+    main {
+      padding: 1rem .5rem;
+    }
+    button {
+      font: inherit;
+      background: transparent;
+      border: none;
+    }
+    button::-moz-focus-inner {
+      padding: 0;
+      border: none;
+    }
+    .symbols-dictionary {
+      border: 0 !important;
+      clip: rect(0 0 0 0) !important;
+      height: 1px !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      padding: 0 !important;
+      position: absolute !important;
+      width: 1px !important;
+    }
+    .gss-toolbar {
+      position: absolute;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      border-bottom: solid 1px #c6c6c6;
+      text-align: left;
+      background: white;
+    }
+    .gss-toolbar--active {
+      position: fixed;
+    }
+    .gss-toolbar > * {
+      display: inline-block;
+      vertical-align: middle;
+      white-space: nowrap;
+      margin: 0;
+      padding: .5rem 1rem;
+      line-height: 1.35;
+    }
+    .gss-toolbar h1 {
+      display: none;
+      font: inherit;
+    }
+    .gss-toolbar:not(.gss-toolbar--active) h1 {
+      display: inline-block;
+    }
+    .gss-toolbar:not(.gss-toolbar--active) h1 ~ * {
+      display: none !important;
+    }
+    .gss-toolbar.gss-toolbar > * + * {
+      border-left: solid 1px #c6c6c6;
+    }
+    .gss-toolbar > *:focus {
+      outline: none;
+      box-shadow: inset 0 0 0 1px #c71585;
+    }
+    .gss-toolbar [hidden] {
+      display: none;
+    }
+    .gss-toolbar-filter {
+      width: 15rem;
+      flex-grow: 10;
+      border: none;
+      font: inherit;
+    }
+    .gss-toolbar button {
+      position: relative;
+      z-index: 1;
+      font-size: 87.5%;
+      background-color: #f4f4f4;
+    }
+    .gss-toolbar-filter + button {
+      margin-left: auto;
+    }
+    .gss-toolbar button[aria-pressed="true"] {
+      z-index: 2;
+      color: #ddd;
+      background-color: #444;
+      outline-color: rgba(255,255,255,.6);
+    }
+    .gss-toolbar .gss-toolbar-list {
+      font-size: 100%;
+    }
+    .gss-toolbar button > svg {
+      fill: currentColor;
+      vertical-align: -2px;
+      margin: 0 4px 0 2px;
+    }
+    .gss-toolbar-list[aria-pressed="true"] ~ .gss-toolbar-orig {
+      display: none;
+    }
+    @media (max-width: 40em) {
+      .gss-toolbar-filter {
+        margin-left: 0 !important;
+      }
+      .gss-toolbar-filter ~ * {
+        display: none !important;
+      }
+    }
+
+    /* Grid of small icons */
+    .gss-iconlist ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-content: center;
+      min-height: calc(100vh - 100px);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .gss-iconlist-item {
+      display: inline-block;
+      vertical-align: top;
+      margin: .5rem;
+    }
+    .gss-iconlist-item a {
+      display: block;
+      box-sizing: border-box;
+      min-height: 100%;
+      border-radius: .35em;
+      padding: .5rem;
+      color: inherit;
+      background-color: #fff;
+      transition: all 100ms;
+    }
+    .gss-iconlist-item a:hover,
+    .gss-iconlist-item a:focus {
+      outline: none;
+      color: #fff;
+      background-color: rgba(0,0,0,.8);
+    }
+    .gss-iconlist-item a > svg {
+      width: 2.75rem;
+      height: 2.75rem;
+      vertical-align: top;
+      fill: currentColor;
+    }
+    @media (min-width: 40em) {
+      .gss-iconlist-item a > svg {
+        width: 3.5rem;
+        height: 3.5rem;
+      }
+    }
+
+    /* Grid of big icons with lots of info */
+    .gss-iconboxes {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0;
+    }
+    .gss-iconboxes[hidden] {
+      display: none;
+    }
+    .gss-iconboxes::after {
+      content: '';
+      flex-grow: 1000;
+    }
+    .gss-iconbox {
+      display: inline-block;
+      vertical-align: top;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      width: calc(100% - 1rem);
+      max-width: 40rem;
+      overflow: hidden;
+      margin: .5rem;
+      border-radius: .5rem;
+      background-color: #fff;
+    }
+    .gss-iconbox:focus {
+      outline: none;
+      box-shadow: 0 0 0 4px #e960b2;
+    }
+    .gss-iconbox[data-state="info"] {
+      background: #f4f4f4;
+    }
+    @media (min-width:40em) {
+      .gss-iconbox { width: calc(50% - 1rem); }
+    }
+    @media (min-width:60em) {
+      .gss-iconbox { width: calc(33.33% - 1rem); }
+    }
+    @media (min-width:80em) {
+      .gss-iconbox { width: calc(25% - 1rem); }
+    }
+    @media (min-width:100em) {
+      main { width: 105rem; max-width: calc(100% - 1rem); margin: 0 auto; }
+      .gss-iconbox { width: calc(20% - 1rem); }
+    }
+    .gss-iconbox-header,
+    .gss-iconbox-head2 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0;
+      padding: 0 .5rem;
+      font-size: 87.5%;
+      color: #444;
+      border-bottom: 1px solid #e6e6e6;
+    }
+    .gss-iconbox-header {
+      background-color: #fff;
+    }
+    .gss-iconbox[data-state="info"] .gss-iconbox-header,
+    .gss-iconbox:not([data-state="info"]) .gss-iconbox-head2 {
+      display: none;
+    }
+    .gss-iconbox-header > *,
+    .gss-iconbox-head2 > * {
+      display: inline-block;
+      white-space: nowrap;
+      padding: .75rem .5rem;
+    }
+    .gss-iconbox-head2 > :nth-child(1) {
+      margin-right: auto;
+      text-align: left;
+    }
+    .gss-iconbox-header h2 {
+      position: relative;
+      top: -1px;
+      overflow: hidden;
+      text-align: left;
+      text-overflow: ellipsis;
+      margin: 0;
+      font: inherit;
+      font-size: 115%;
+      line-height: 1;
+      color: black;
+    }
+    .gss-iconbox-header > span {
+      color: #777;
+    }
+    .gss-iconbox-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 1;
+      position: relative;
+      overflow: hidden;
+      min-height: 8rem;
+    }
+    .gss-iconbox:not([data-state="info"]) .gss-iconbox-wrapper {
+      background-color: #fafafa;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgb(238,238,238)" width="100" height="100"><rect x="0" y="0" width="50" height="50"></rect><rect x="50" y="50" width="50" height="50"></rect></svg>');
+      background-size: 24px 24px;
+    }
+    @media (min-width:40em) {
+      .gss-iconbox-wrapper { min-height: 10rem; }
+    }
+    .gss-iconbox-icon {
+      padding: 1rem;
+    }
+    .gss-iconbox[data-state="info"] .gss-iconbox-icon {
+      display: none;
+    }
+    .gss-iconbox-icon > svg {
+      fill: currentColor;
+      vertical-align: middle;
+      width: 6rem;
+      height: 6rem;
+      max-width: 16rem;
+      max-height: 16rem;
+    }
+    @media (min-width:40em) {
+      .gss-iconbox-icon > svg {
+        width: 8rem;
+        height: 8rem;
+      }
+    }
+    .gss-showColor svg[id^="gss-icon-"] {
+      color: red;
+      fill: red;
+    }
+    .gss-showOriginal .gss-iconbox-icon > svg {
+      margin-top: 1rem;
+      outline: solid 1px rgba(0,0,0,.5);
+      box-shadow: 0 0 0 250px rgba(255,255,255,.8);
+    }
+    @media (min-resolution: 2dppx) {
+      .gss-showOriginal .gss-iconbox-icon > svg {
+        outline-width: .5px;
+      }
+    }
+    .gss-showOriginal .gss-iconbox-icon::after {
+      content: attr(data-dimensions);
+      display: table;
+      margin: .5rem auto 0;
+      padding: 1px 3px;
+      font-size: 75%;
+      color: #444;
+    }
+    .gss-iconbox-code {
+      flex-grow: 1;
+      margin: 0;
+      padding: 1rem;
+      text-align: left;
+      font: inherit;
+      line-height: 1.35;
+      background-color: #f4f4f4;
+    }
+    .gss-iconbox-code code {
+      display: block;
+      white-space: pre-wrap;
+      font-family: monospace, monospace;
+      font-size: 80%;
+    }
+    /* can't display none: copy won't work */
+    .gss-iconbox[data-state="icon"] .gss-iconbox-code {
+      position: absolute;
+      top: -200px;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .gss-iconbox-action {
+      display: none;
+      border-top: 1px solid #e6e6e6;
+    }
+    .gss-iconbox[data-state] .gss-iconbox-action {
+      display: block;
+      display: flex;
+    }
+    .gss-iconbox-action > * {
+      flex-grow: 1;
+      flex-basis: 33.3%;
+      padding: .8rem .5rem;
+      border: 0;
+      font: inherit;
+      font-size: 87.5%;
+      color: #444;
+      background: none;
+    }
+    .gss-iconbox-action > * + * {
+      border-left: 1px solid #e6e6e6;
+    }
+    .gss-iconbox-action button {
+      cursor: pointer;
+      outline: none;
+    }
+    .gss-iconbox-action button:hover,
+    .gss-iconbox-action button:focus {
+      color: #c71585;
+    }
+    .gss-iconbox-action button:focus {
+      outline: solid 1px;
+      outline-offset: -6px;
+    }
+    .gss-iconbox-action button:active {
+      color: black;
+    }
+  </style>
+  <style>
+    .gss-showOriginal .gss-iconbox #gss-icon-sofa-dimensions {
+      width: 611px;
+      height: 334px;
+    }
+    
+    
+  </style>
+  <style class="gss-filter-css"></style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" class="symbols-dictionary">
+  <defs>
+    false
+  </defs>
+  
+  <symbol id="sofa-dimensions" viewBox="0 0 611.914 334.957">
+     <g id="Group_1314" data-name="Group 1314" transform="translate(-912.086 -1893.5)"> <text id="_92" data-name="92" transform="translate(1176.303 1939.771)" fill="#b1b1b1" font-size="14" font-family="HelveticaNeueCyr-Roman, HelveticaNeueCyr"><tspan x="-7.784" y="0">92</tspan></text> <text id="_240" data-name="240" transform="translate(1021.346 2012.207)" fill="#b1b1b1" font-size="14" font-family="HelveticaNeueCyr-Roman, HelveticaNeueCyr"><tspan x="-11.676" y="0">240</tspan></text> <line id="Line_29" data-name="Line 29" y2="13.554" transform="translate(1028.238 1934.66)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_32" data-name="Line 32" x2="101.651" transform="translate(926.586 1914.33)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_33" data-name="Line 33" y2="54.214" transform="translate(960.469 1894)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_34" data-name="Line 34" y2="54.214" transform="translate(994.354 1894)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_35" data-name="Line 35" x2="101.651" transform="translate(1028.238 1914.33)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_36" data-name="Line 36" y2="54.214" transform="translate(1062.121 1894)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_37" data-name="Line 37" y2="54.214" transform="translate(1096.004 1894)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_826" data-name="Rectangle 826" width="203.302" height="13.554" transform="translate(926.668 1934.66)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_827" data-name="Rectangle 827" width="13.553" height="41.508" transform="translate(913.115 1927.037)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_828" data-name="Rectangle 828" width="203.302" height="20.33" transform="translate(926.668 1948.215)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_829" data-name="Rectangle 829" width="13.553" height="5.93" transform="translate(913.115 1921.107)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_830" data-name="Rectangle 830" width="13.553" height="5.93" transform="translate(913.115 1968.545)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_831" data-name="Rectangle 831" width="13.553" height="5.93" transform="translate(1129.973 1968.545)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_832" data-name="Rectangle 832" width="13.553" height="41.508" transform="translate(1129.973 1927.037)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_833" data-name="Rectangle 833" width="13.553" height="5.93" transform="translate(1129.973 1921.107)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_851" data-name="Rectangle 851" width="101.651" height="40.661" transform="translate(926.668 1894)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_852" data-name="Rectangle 852" width="101.651" height="40.661" transform="translate(1028.32 1894)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <path id="Path_4390" data-name="Path 4390" d="M204.693,238.378V157.056" transform="translate(957.891 1737.518)" fill="#fff" stroke="#b1b1b1" stroke-miterlimit="10" stroke-width="1"/> <path id="Path_4406" data-name="Path 4406" d="M5772.226,2143.9l1.809-2.9,1.808,2.9" transform="translate(-4611.457 -246.426)" fill="none" stroke="#b1b1b1" stroke-width="1"/> <path id="Path_4407" data-name="Path 4407" d="M0,3.158,2.055,0,4.127,3.158" transform="translate(1164.658 1976.244) rotate(180)" fill="none" stroke="#b1b1b1" stroke-width="1"/> <path id="Path_4390-2" data-name="Path 4390" d="M.048,230.522,0,0" transform="translate(1144.221 1990.461) rotate(90)" fill="#fff" stroke="#b1b1b1" stroke-miterlimit="10" stroke-width="1"/> <path id="Path_4406-2" data-name="Path 4406" d="M0,2.9,1.809,0,3.617,2.9" transform="translate(1144.492 1988.693) rotate(90)" fill="none" stroke="#b1b1b1" stroke-width="1"/> <path id="Path_4407-2" data-name="Path 4407" d="M0,3.158,2.055,0,4.127,3.158" transform="translate(913 1992.582) rotate(-90)" fill="none" stroke="#b1b1b1" stroke-width="1"/> <line id="Line_30" data-name="Line 30" x2="108.428" transform="translate(914.754 2127.211)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <path id="Path_4398" data-name="Path 4398" d="M428.513,498.339l81.321.2v11.978H428.513" transform="translate(594.668 1628.873)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_854" data-name="Rectangle 854" width="3.388" height="18.756" transform="translate(1101.113 2139.389)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_45" data-name="Line 45" y2="48.312" transform="translate(941.859 2103.254)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_46" data-name="Line 46" y2="48.312" transform="translate(969.441 2103.254)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_47" data-name="Line 47" y2="48.312" transform="translate(996.09 2103.254)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <path id="Path_4399" data-name="Path 4399" d="M521.353,498.684v30.735" transform="translate(555.123 1628.727)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_48" data-name="Line 48" x2="12.635" y2="8.421" transform="translate(1037.611 2139.389)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <path id="Path_4400" data-name="Path 4400" d="M475.659,498.684v30.735" transform="translate(574.586 1628.727)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <text id="_116" data-name="116" transform="translate(964.633 2192.604)" fill="#b1b1b1" font-size="14" font-family="HelveticaNeueCyr-Roman, HelveticaNeueCyr"><tspan x="-11.676" y="0">116</tspan></text> <text id="_162" data-name="162" transform="translate(1001.84 2225.457)" fill="#b1b1b1" font-size="14" font-family="HelveticaNeueCyr-Roman, HelveticaNeueCyr"><tspan x="-11.676" y="0">162</tspan></text> <rect id="Rectangle_840" data-name="Rectangle 840" width="20.33" height="21.205" transform="translate(922.188 2081.85)" fill="none" stroke="#613175" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <path id="Path_4388" data-name="Path 4388" d="M308.356,428.363H280.774l-8.188-32.677,24.488-4.916Z" transform="translate(661.742 1674.691)" fill="none" stroke="#613175" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_841" data-name="Rectangle 841" width="13.553" height="5.93" transform="translate(915.41 2151.367)" fill="none" stroke="#613175" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_842" data-name="Rectangle 842" width="13.553" height="5.93" transform="translate(1010.285 2151.367)" fill="none" stroke="#613175" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_843" data-name="Rectangle 843" width="108.428" height="48.312" transform="translate(915.41 2103.055)" fill="none" stroke="#613175" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <path id="Path_4390-3" data-name="Path 4390" d="M.049,109.786,0,0" transform="translate(1023.484 2174.143) rotate(90)" fill="none" stroke="#b1b1b1" stroke-miterlimit="10" stroke-width="1"/> <path id="Path_4408" data-name="Path 4408" d="M.049,190.533,0,0" transform="translate(1104.23 2201.123) rotate(90)" fill="#fff" stroke="#b1b1b1" stroke-miterlimit="10" stroke-width="1"/> <path id="Path_4406-3" data-name="Path 4406" d="M0,2.9,1.809,0,3.617,2.9" transform="translate(1023.756 2172.375) rotate(90)" fill="none" stroke="#b1b1b1" stroke-width="1"/> <path id="Path_4409" data-name="Path 4409" d="M0,2.9,1.809,0,3.617,2.9" transform="translate(1104.502 2199.355) rotate(90)" fill="none" stroke="#b1b1b1" stroke-width="1"/> <path id="Path_4407-3" data-name="Path 4407" d="M0,3.158,2.055,0,4.127,3.158" transform="translate(913 2203.264) rotate(-90)" fill="none" stroke="#b1b1b1" stroke-width="1"/> <path id="Path_4410" data-name="Path 4410" d="M0,3.158,2.055,0,4.127,3.158" transform="translate(913 2176.244) rotate(-90)" fill="none" stroke="#b1b1b1" stroke-width="1"/> <text id="_92-2" data-name="92" transform="translate(1516 1996.703)" fill="#b1b1b1" font-size="14" font-family="HelveticaNeueCyr-Roman, HelveticaNeueCyr"><tspan x="-7.784" y="0">92</tspan></text> <text id="_240-2" data-name="240" transform="translate(1359.044 2138.916)" fill="#b1b1b1" font-size="14" font-family="HelveticaNeueCyr-Roman, HelveticaNeueCyr"><tspan x="-11.676" y="0">240</tspan></text> <line id="Line_117" data-name="Line 117" y2="200.584" transform="translate(1291.168 1894)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_118" data-name="Line 118" y2="200.584" transform="translate(1325.051 1894)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_116" data-name="Line 116" x2="101.651" transform="translate(1257.283 1914.033)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_120" data-name="Line 120" x2="101.651" transform="translate(1358.935 1914.033)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_116-2" data-name="Line 116" x2="101.651" transform="translate(1257.283 2021.709)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_120-2" data-name="Line 120" x2="101.651" transform="translate(1358.935 2021.709)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_116-3" data-name="Line 116" x2="101.651" transform="translate(1257.283 1968.289)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_120-3" data-name="Line 120" x2="101.651" transform="translate(1358.935 1968.289)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_116-4" data-name="Line 116" x2="101.651" transform="translate(1257.283 1940.742)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_120-4" data-name="Line 120" x2="101.651" transform="translate(1358.935 1940.742)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_116-5" data-name="Line 116" x2="101.651" transform="translate(1257.283 2049.254)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_120-5" data-name="Line 120" x2="101.651" transform="translate(1358.935 2049.254)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_116-6" data-name="Line 116" x2="101.651" transform="translate(1257.283 2075.965)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_120-6" data-name="Line 120" x2="101.651" transform="translate(1358.935 2075.965)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_116-7" data-name="Line 116" x2="101.651" transform="translate(1257.283 1994.998)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_120-7" data-name="Line 120" x2="101.651" transform="translate(1358.935 1994.998)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_121" data-name="Line 121" y2="200.584" transform="translate(1392.818 1894)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_123" data-name="Line 123" y2="200.584" transform="translate(1358.596 1894)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <line id="Line_122" data-name="Line 122" y2="200.584" transform="translate(1426.703 1894)" fill="none" stroke="#d1d1d1" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_827-2" data-name="Rectangle 827" width="13.553" height="71.395" transform="translate(1243.813 1911.178)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_829-2" data-name="Rectangle 829" width="13.553" height="5.93" transform="translate(1243.813 1905.248)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_830-2" data-name="Rectangle 830" width="13.553" height="5.93" transform="translate(1243.813 1982.572)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_831-2" data-name="Rectangle 831" width="13.553" height="5.93" transform="translate(1460.669 1982.572)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_832-2" data-name="Rectangle 832" width="13.553" height="71.395" transform="translate(1460.669 1911.178)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_833-2" data-name="Rectangle 833" width="13.553" height="5.93" transform="translate(1460.669 1905.248)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_851-2" data-name="Rectangle 851" width="101.651" height="46.743" transform="translate(1257.367 1894)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_906" data-name="Rectangle 906" width="203.484" height="154.419" transform="translate(1257.367 1940.742)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <rect id="Rectangle_852-2" data-name="Rectangle 852" width="101.651" height="46.743" transform="translate(1359.019 1894)" fill="none" stroke="#4b2467" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/> <path id="Path_4390-4" data-name="Path 4390" d="M204.693,357.3V157.056" transform="translate(1290.258 1737.518)" fill="#fff" stroke="#b1b1b1" stroke-miterlimit="10" stroke-width="1"/> <path id="Path_4406-4" data-name="Path 4406" d="M5772.226,2143.9l1.809-2.9,1.808,2.9" transform="translate(-4279.09 -246.426)" fill="none" stroke="#b1b1b1" stroke-width="1"/> <path id="Path_4407-4" data-name="Path 4407" d="M0,3.158,2.055,0,4.127,3.158" transform="translate(1497.024 2095.162) rotate(180)" fill="none" stroke="#b1b1b1" stroke-width="1"/> <path id="Path_4390-5" data-name="Path 4390" d="M.048,202.333,0,0" transform="translate(1460.396 2118.17) rotate(90)" fill="none" stroke="#b1b1b1" stroke-miterlimit="10" stroke-width="1"/> <path id="Path_4406-5" data-name="Path 4406" d="M0,2.9,1.809,0,3.617,2.9" transform="translate(1460.669 2116.402) rotate(90)" fill="none" stroke="#b1b1b1" stroke-width="1"/> <path id="Path_4407-5" data-name="Path 4407" d="M0,3.158,2.055,0,4.127,3.158" transform="translate(1257.367 2120.291) rotate(-90)" fill="none" stroke="#b1b1b1" stroke-width="1"/> </g> 
+  </symbol>
+  <symbol id="gss-icon-list" viewBox="0 0 5 5">
+    <rect width="2" height="2" x="0" y="0"></rect>
+    <rect width="2" height="2" x="3" y="0"></rect>
+    <rect width="2" height="2" x="0" y="3"></rect>
+    <rect width="2" height="2" x="3" y="3"></rect>
+  </symbol>
+</svg>
+<header class="gss-toolbar">
+  <h1>1 Symbols</h1>
+  <button class="gss-toolbar-list">
+    <svg aria-label="Compact" width="15" height="15"><use xlink:href="#gss-icon-list"></use>
+    </svg> List
+  </button>
+  <input class="gss-toolbar-filter" type="search"
+         placeholder="Filter 1 symbols…"
+         aria-label="Filter by id" title="Filter by id">
+  <button class="gss-toolbar-orig" data-toggle-class="gss-showOriginal">Original Size</button>
+  <button class="gss-toolbar-outl" data-toggle-class="gss-showColor">Test Color</button>
+</header>
+<main>
+<nav class="gss-iconlist" hidden></nav>
+<div class="gss-iconboxes">
+  <div class="gss-iconbox gss-searchable"
+       id="gss-iconbox-sofa-dimensions"
+       data-search="sofa-dimensions sofa-dimensions 611x334 >1 >2 >3 >4 >5 >6 >7 >8 >9">
+    <div class="gss-iconbox-header">
+      <h2>sofa-dimensions</h2>
+      <span>15.6&thinsp;kB</span>
+    </div>
+    <p class="gss-iconbox-head2">
+      <span>sofa-dimensions.svg</span>
+      <span>611&thinsp;×&thinsp;334</span>
+      <span>15632&thinsp;B</span>
+    </p>
+    <div class="gss-iconbox-wrapper">
+      <div class="gss-iconbox-icon" data-dimensions="611&thinsp;×&thinsp;334">
+        <svg role="img" id="gss-icon-sofa-dimensions">
+          <use xlink:href="#sofa-dimensions"></use>
+        </svg>
+      </div>
+      <div class="gss-iconbox-code">
+        <code>&lt;svg role=&quot;img&quot; class=&quot;sofa-dimensions&quot;&gt;
+  &lt;use xlink:href=&quot;#sofa-dimensions&quot;&gt;&lt;/use&gt;
+&lt;/svg&gt;</code>
+      </div>
+    </div>
+    <div class="gss-iconbox-action">
+      <button data-action="copy">Copy</button>
+      <button data-action="info">Show</button>
+    </div>
+  </div>
+</div>
+</main>
+<script type="text/javascript">
+  (function () {
+    var header = document.querySelector('.gss-toolbar');
+    var boxes = document.querySelector('.gss-iconboxes');
+    var clist = document.querySelector('.gss-iconlist');
+    var main = document.querySelector('main');
+
+    // Show header
+    header.classList.add('gss-toolbar--active');
+
+    // Hide example code and show controls
+    [].forEach.call(
+      boxes.querySelectorAll('.gss-iconbox'),
+      toggleBoxContent
+    );
+
+    // Toggle list of smaller icons
+    var listToggle = header.querySelector('.gss-toolbar-list');
+    listToggle.hidden = false;
+    listToggle.addEventListener('click', function(event) {
+        toggleCompactList();
+    });
+    // Close list and navigate
+    clist.addEventListener('click', function(event) {
+      var link = closest(
+        event.target,
+        function(el){return el.hasAttribute('href')}
+      );
+      if (link) {
+        event.preventDefault();
+        var target = document.querySelector(link.getAttribute('href'));
+        if (target) toggleCompactList('big', target);
+      }
+    });
+
+    // Enable filter box
+    var filterInput = header.querySelector('.gss-toolbar-filter');
+    var filterStyle = document.querySelector('.gss-filter-css');
+    // filter once on page load, then on key presses
+    if (filterInput && filterStyle) {
+      filterIcons(filterInput.value, filterStyle);
+      filterInput.addEventListener('keypress', function(e) {
+        if (e.keyCode === 27) {
+          e.currentTarget.value = '';
+          filterIcons('', filterStyle);
+        }
+      });
+      filterInput.addEventListener('input', function(e) {
+        filterIcons(e.currentTarget.value, filterStyle);
+      });
+      filterInput.hidden = false;
+    }
+
+    // Icon actions (with event delegation)
+    boxes.addEventListener('click', function(event) {
+      var action = event.target.getAttribute('data-action');
+      if (!action) return;
+      var box = closest(event.target, function(el){
+        return el.classList.contains('gss-iconbox');
+      });
+      if (box && action === 'info') {
+        var state = toggleBoxContent(box);
+      }
+      if (box && action === 'copy') {
+        selectAndCopy(box.querySelector('code'));
+      }
+    });
+    // Remove JS-added tabindex from boxes, to avoid giving a focusring
+    // to a box by clicking it or its content.
+    boxes.addEventListener('blur', function(event) {
+      var t = event.target;
+      if (t.classList.contains('gss-iconbox') && t.hasAttribute('tabindex')) {
+        t.removeAttribute('tabindex');
+      }
+    }, true);
+
+    // Enable checkboxes
+    header.addEventListener('click', function(event) {
+      var attr = 'data-toggle-class';
+      var btn = closest(event.target, function(el) {
+        return el.hasAttribute(attr);
+      });
+      if (btn) {
+        var c = btn.getAttribute(attr);
+        if (main.classList.contains(c)) {
+          main.classList.remove(c);
+          btn.setAttribute('aria-pressed', 'false');
+        } else {
+          main.classList.add(c);
+          btn.setAttribute('aria-pressed', 'true');
+        }
+      }
+    });
+
+    /**
+     * Quick and dirty polyfill for element.closest
+     * @param {Element} self
+     * @param {Function} cb - must return true for a matching element
+     * @return {Element|null}
+     */
+    function closest(self, cb) {
+      if (cb(self)) return self;
+      var p = self.parentElement;
+      return p === null ? null : closest(p, cb);
+    }
+
+    /**
+     * Toggle code example visibility
+     */
+    function toggleBoxContent(box) {
+      var a = 'data-state', x = 'icon', y = 'info';
+      var s = box.getAttribute(a) === x ? y : x;
+      box.setAttribute(a, s);
+      return s;
+    }
+
+    /**
+     * Copy example code to clipboard
+     * https://developers.google.com/web/updates/2015/04/cut-and-copy-commands
+     */
+    function selectAndCopy(element) {
+      window.getSelection().removeAllRanges();
+      var range = document.createRange();
+      range.selectNode(element);
+      window.getSelection().addRange(range);
+      document.execCommand('copy');
+    }
+
+    /**
+     * Filter content by id, with multiple words possible (additive)
+     * Filtering is done by injecting CSS rules in a stylesheet
+     */
+    function filterIcons(query, stylesheet) {
+      // clean up input
+      var search = query.toLowerCase()
+        .replace(/["'\\\]){}]+/g, ' ')
+        .replace('/\s+/g', ' ')
+        .trim();
+      // undo filter
+      if (search === '') {
+        stylesheet.innerHTML = '';
+        return;
+      }
+      // add filter
+      var keywords = search.split(' ');
+      var css = '';
+      for (var i=0; i<keywords.length; i++) {
+        if (i>0) css += ',\n';
+        css += '.gss-searchable:not([data-search*="' + keywords[i] + '"])';
+      }
+      css += '\n{ display: none !important; }';
+      stylesheet.innerHTML = css;
+    }
+
+    /**
+     * Show the compact list
+     * @param {string} mode - 'small' or 'big'
+     * @param {Element|undefined} target - element to focus
+     */
+    function toggleCompactList(mode, target) {
+      if (clist.childElementCount === 0) {
+        clist.innerHTML = '<ul>' + getCompactList(boxes).join('\n') + '</ul>';
+      }
+      if (['small', 'big'].indexOf(mode) === -1) {
+        mode = clist.hidden ? 'small' : 'big';
+      }
+      // switch content
+      clist.hidden = (mode === 'big');
+      boxes.hidden = (mode === 'small');
+
+      // update button status
+      listToggle.setAttribute('aria-pressed', String(mode === 'small'));
+
+      // scroll to the top if showing the small list
+      if (mode === 'small' || (mode === 'big' && !target)) {
+        window.scrollTo(0, 0);
+      }
+      // scroll to element and give it focus if going to big mode
+      if (mode === 'big' && target) {
+        // focus element
+        target.setAttribute('tabindex', '-1');
+        target.focus();
+        // centering in viewport
+        var y = target.offsetTop - window.innerHeight / 2 + target.offsetHeight / 2;
+        window.scrollTo(0, Math.max(Math.round(y) - 20 /* adjust for header */, 0));
+      }
+    }
+
+    /**
+     * Make the list of smaller icons by copying from the big list
+     */
+    function getCompactList(source) {
+      var icons = source.querySelectorAll('.gss-iconbox');
+      return [].map.call(icons, function(el) {
+        var search = el.getAttribute('data-search');
+        var icon = el.querySelector('.gss-iconbox-icon > svg').outerHTML;
+        return '<li class="gss-iconlist-item gss-searchable" ' +
+          'data-search="' + search +'"><a href="#' + el.id + '">' +
+          icon + '</a></li>';
+      });
+    }
+
+  }());
+</script>
+</body>
+</html>
