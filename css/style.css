@@ -607,6 +607,85 @@ a:focus {
   color: white;
 }
 
+/* pages */
+
+.calc {
+  max-width: 208px;
+  font-size: 25px;
+}
+
+.calc__input {
+  height: 50px;
+  width: 100%;
+  text-align: right;
+}
+
+.calc__buttons {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.button,
+.button-equal {
+  width: 50px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #f3f3f3;
+  border: none;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  margin: 1px;
+  -webkit-transition: 0.3s all;
+  -o-transition: 0.3s all;
+  transition: 0.3s all;
+}
+
+.button:hover,
+.button-equal:hover {
+  background-color: #b7b7b7;
+}
+
+.calc__numbers {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+.calc__operands {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.clear {
+  background-color: #f3f3f3;
+  border: none;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  margin: 1px;
+  -webkit-transition: 0.3s all;
+  -o-transition: 0.3s all;
+  transition: 0.3s all;
+  text-align: center;
+}
+
+.clear:hover {
+  background-color: #b7b7b7;
+}
+
 body {
   min-width: 375px;
 }
@@ -619,6 +698,7 @@ body {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   outline: 0;
+  font-family: 'Roboto', sans-serif;
 }
 
 *:before,

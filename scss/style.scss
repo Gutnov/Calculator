@@ -16,6 +16,8 @@
 @import 'blocks/header';
 @import 'blocks/footer';
 
+/* pages */
+@import 'pages/calculator';
 body
 {
 	min-width: 375px;
@@ -33,6 +35,7 @@ body
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	outline: 0;
+	font-family: 'Roboto', sans-serif;
 }
 
 *:before,
